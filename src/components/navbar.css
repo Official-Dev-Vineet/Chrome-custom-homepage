@@ -1,0 +1,55 @@
+nav {
+  position: relative;
+}
+.logo {
+  font-size: 2rem;
+}
+.search{
+    position: relative;
+    max-width: 50rem;
+}
+input{
+  background-color:inherit;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.bar {
+  gap: 0.2rem;
+  width: 2.5rem;
+  padding: 0.3rem;
+}
+.bar span {
+  height: 0.2rem;
+  background-color: var(--light);
+  width: 100%;
+  border-radius: inherit;
+  transform-origin: center;
+  transition: 300ms ease-in-out;
+}
+.bar.active span {
+  background-color: var(--info);
+  box-shadow: 0 0 10px var(--info);
+}
+.bar.active span:nth-child(1) {
+  transform: translateY(0.5rem) rotate(45deg);
+}
+.bar.active span:nth-child(2) {
+  opacity: 0;
+}
+.bar.active span:nth-child(3) {
+  transform: translateY(-0.5rem) rotate(-45deg);
+}

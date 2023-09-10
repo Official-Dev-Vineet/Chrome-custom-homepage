@@ -1,0 +1,56 @@
+aside {
+  position: absolute;
+  right: 1rem;
+  top: 100%;
+  z-index: 99;
+  background-color: var(--dark);
+}
+aside.active {
+  transform: translateX(calc(3rem + 100%));
+}
+.service li:hover{
+  color: var(--info);
+}
+
+.user-control {
+  width: 250px;
+  position: absolute;
+  right: calc(100% + 5rem);
+  top: 50%;
+  background-color: var(--dark);
+  overflow: hidden;
+}
+.wrapper{
+  z-index: 3;
+}
+.user-control::before {
+  content: "";
+  position: absolute;
+  border-radius: inherit;
+  z-index: 1;
+  inset: 0.2rem;
+  background-image: linear-gradient(to right, var(--primary), var(--success));
+  animation: rotate 2s linear infinite;
+}
+.user-control::after {
+  content: "";
+  position: absolute;
+  border-radius: inherit;
+  background-color: var(--dark);
+  z-index: 2;
+  inset: 0.2rem;
+}
+@keyframes rotate {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.user-control input:invalid {
+  box-shadow: 0 0 0 0.3rem var(--danger);
+}
+.user-control input:valid {
+  box-shadow: 0 0 0 0.3rem var(--success);
+}

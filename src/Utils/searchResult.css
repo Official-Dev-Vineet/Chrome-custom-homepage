@@ -1,0 +1,19 @@
+.searchResult {
+  max-height: 200px;
+  overflow-y: auto;
+}
+.searchResult::-webkit-scrollbar {
+  width: 0;
+}
+.searchResult li:hover {
+  background-color: var(--primary);
+}
+.select {
+  background-color: inherit;
+  color: inherit;
+}
+.select option {
+  background-color: inherit;
+  color: var(--dark);
+}
+
