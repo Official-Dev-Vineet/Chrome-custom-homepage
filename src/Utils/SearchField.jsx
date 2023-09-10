@@ -17,11 +17,15 @@ export const SearchField = () => {
     data && setIsResultFetching(true);
     setSearchTime(data.serverTimeMS);
   };
-  const fetchResultForGoogle = async (sValue) => {
+  import.meta.env.VITE_SEARCH_KEY;
+  const fetchResultForGoogle = async (
+    sValue,
+    key = import.meta.env.VITE_SEARCH_KEY
+  ) => {
     const response = await fetch(
-      `${import.meta.env.VITE_SEARCH_URL}?key=${
-        import.meta.env.VITE_SEARCH_KEY
-      }&cx=${import.meta.env.VITE_SEARCH_ENGINE_ID}&q=${sValue}`
+      `${import.meta.env.VITE_SEARCH_URL}?key=${key}&cx=${
+        import.meta.env.VITE_SEARCH_ENGINE_ID
+      }&q=${sValue}`
     );
     if (response.status !== 429) {
       const data = await response.json();
@@ -34,6 +38,7 @@ export const SearchField = () => {
       setIsDisabled(true);
     }
   };
+
   const startSearch = () => {
     setError(false);
     const filterValue = inputRef.current.value.trim();
@@ -43,6 +48,9 @@ export const SearchField = () => {
     filterValue.length > 0 &&
       searchEngine === "google" &&
       fetchResultForGoogle(filterValue);
+    filterValue.length > 0 &&
+      searchEngine === "google-v2" &&
+      fetchResultForGoogle(filterValue, import.meta.env.VITE_SEARCH_KEY_V2);
   };
   return (
     <div className="search flex-grow-up relative">
