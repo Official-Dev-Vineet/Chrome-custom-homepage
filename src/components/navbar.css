@@ -41,7 +41,7 @@ input{
   transition: 300ms ease-in-out;
 }
 .bar.active span {
-  background-color: var(--info);
+  background-color: var(--primary);
   box-shadow: 0 0 10px var(--info);
 }
 .bar.active span:nth-child(1) {

@@ -1,5 +1,5 @@
 .searchResult {
-  max-height: 200px;
+  max-height: 250px;
   overflow-y: auto;
 }
 .searchResult::-webkit-scrollbar {
@@ -17,3 +17,11 @@
   color: var(--dark);
 }
 
+@media screen and (max-width:765px) {
+  .search-engine{
+    flex-direction: column;
+  }
+  .top{
+    top: 8rem !important;
+  }
+}

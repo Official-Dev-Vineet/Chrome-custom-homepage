@@ -1,30 +1,33 @@
-import { useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import "./searchResult.css";
 export const SearchField = () => {
-  const inputRef = useRef();
   const [searchEngine, setSearchEngine] = useState("algolia");
+  const [loading, setLoading] = useState(false);
   const [searchTime, setSearchTime] = useState(null);
   const [isResultFetching, setIsResultFetching] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
   const [searchResult, setSearchResult] = useState({});
   const [error, setError] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('')
   const fetchSearchResult = async (sValue) => {
+    setLoading(true)
     const response = await fetch(
       `https://hn.algolia.com/api/v1/search?query=${sValue}`
     );
     const data = await response.json();
     data && setSearchResult(data);
     data && setIsResultFetching(true);
+    data && setLoading(false)
     setSearchTime(data.serverTimeMS);
+    console.log(data)
   };
-  import.meta.env.VITE_SEARCH_KEY;
   const fetchResultForGoogle = async (
     sValue,
     key = import.meta.env.VITE_SEARCH_KEY
   ) => {
+    setLoading(true)
     const response = await fetch(
-      `${import.meta.env.VITE_SEARCH_URL}?key=${key}&cx=${
-        import.meta.env.VITE_SEARCH_ENGINE_ID
+      `${import.meta.env.VITE_SEARCH_URL}?key=${key}&cx=${import.meta.env.VITE_SEARCH_ENGINE_ID
       }&q=${sValue}`
     );
     if (response.status !== 429) {
@@ -32,16 +35,19 @@ export const SearchField = () => {
       setSearchResult(data);
       setIsResultFetching(true);
       setSearchTime(data.searchInformation.searchTime);
+      setLoading(false)
     } else {
       setError("search Engine Daily Limit Exceeded, Please Use algolia");
       setSearchEngine("algolia");
       setIsDisabled(true);
+      setLoading(false)
     }
   };
-
   const startSearch = () => {
     setError(false);
-    const filterValue = inputRef.current.value.trim();
+    setIsResultFetching(false);
+    setIsDisabled(false);
+    const filterValue = searchTerm.trim();
     filterValue.length > 0 &&
       searchEngine === "algolia" &&
       fetchSearchResult(filterValue);
@@ -52,6 +58,12 @@ export const SearchField = () => {
       searchEngine === "google-v2" &&
       fetchResultForGoogle(filterValue, import.meta.env.VITE_SEARCH_KEY_V2);
   };
+  useEffect(() => {
+    const getSearch = setTimeout(() => {
+      startSearch()
+    }, 500)
+    return () => clearTimeout(getSearch)
+  }, [searchTerm])
   return (
     <div className="search flex-grow-up relative">
       <input
@@ -60,10 +72,10 @@ export const SearchField = () => {
         className="padding-sm pl shadow-3d t-light transition radius-2 w-full"
         style={{ "--value": 2 }}
         placeholder="Search..."
-        ref={inputRef}
-        onChange={startSearch}
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
       />
-      <div className="absolute w-full flex justify-between mt">
+      <div className="search-engine absolute w-full flex justify-between gap-sm mt">
         <span>Result Fetched in : {searchTime} ms</span>
         <select
           className="select"
@@ -78,11 +90,17 @@ export const SearchField = () => {
           <option value="algolia">Algolia</option>
         </select>
       </div>
+      {
+        loading && <p className="searchResult w-full radius-1 mt flex flex-col gap-sm absolute overflow-auto pad-x-y top">
+          Loading Result...
+        </p>
+      }
       {isResultFetching && searchEngine === "algolia" && (
         <ul
-          className="searchResult shadow-3d mt radius-1 flex flex-col gap-sm absolute overflow-auto"
+          className="searchResult shadow-3d mt radius-1 flex flex-col gap-sm absolute overflow-auto top"
           style={{ "--value": 4 }}
         >
+          <li className="sticky">Search Result for : {searchTerm}</li>
           {searchResult?.hits?.length > 0 &&
             searchResult?.hits?.map((item) => (
               <li
@@ -95,7 +113,7 @@ export const SearchField = () => {
                   rel="noreferrer noopener"
                   className="t-light"
                 >
-                  {item.title}
+                  {item.story_title || item.title}
                 </a>
               </li>
             ))}
@@ -103,7 +121,7 @@ export const SearchField = () => {
       )}
       {isResultFetching && searchEngine === "google" && !error ? (
         <ul
-          className="searchResult shadow-3d mt radius-1 flex flex-col gap-sm absolute overflow-auto"
+          className="searchResult shadow-3d mt radius-1 flex flex-col gap-sm absolute overflow-auto top"
           style={{ "--value": 4 }}
         >
           {searchResult?.items?.length > 0 &&
@@ -117,8 +135,9 @@ export const SearchField = () => {
                   target="_blank"
                   rel="noreferrer noopener"
                   className="t-light"
+                  onClick={()=>linkHandler(item.link)}
                 >
-                  <span className="text-ellipse">{item.title}</span>
+                  <span className="text-ellipse" dangerouslySetInnerHTML={{ __html: item.htmlTitle || item.title }}></span>
                 </a>
               </li>
             ))}

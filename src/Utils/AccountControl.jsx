@@ -8,34 +8,44 @@ import { FiLogOut } from "react-icons/fi";
 import { BsFillBookmarkStarFill } from "react-icons/bs";
 import { FaHistory } from "react-icons/fa";
 import { BiSolidHelpCircle } from "react-icons/bi";
+import Settings from "./Settings";
 export const AccountControl = ({ activeState }) => {
   const [isShow, setIsShow] = useState(false);
-  const sideBarHandler = () => {
-    setIsShow(!isShow);
+  const [isSettingShow, setIsSettingShow] = useState(false)
+  const sideBarHandler = (value) => {
+    value === "isShow" ? setIsShow(pre=>!pre) : value === "isSettingShow" ? setIsSettingShow(pre=>!pre) : null
   };
   useEffect(() => {
     activeState ? setIsShow(false) : null;
+    activeState ? setIsSettingShow(false) : null
   }, [activeState]);
+  const logoutHandler = () => {
+    localStorage.clear();
+    window.location.reload();
+  }
   return (
     <aside
-      className={`shadow-3d padding-md transition radius-1 ${
-        activeState && "active"
-      }`}
+      className={`shadow-3d padding-md transition radius-1 ${activeState && "active"
+        }`}
     >
       <h2 className="ff-1 mb tac">Account Control</h2>
       <ul className="service relative flex flex-col gap-sm">
         <li
           className="pointer flex align-center gap-sm"
-          onClick={() => sideBarHandler()}
+          onClick={() => sideBarHandler("isShow")}
         >
           <FaUserCircle />
           <span className="text">Profile</span>
         </li>
         {isShow && <UserChange />}
-        <li className="pointer transition  flex align-center gap-sm">
+        <li className="pointer transition  flex align-center gap-sm"
+          onClick={() => sideBarHandler("isSettingShow")}>
           <MdSettingsSuggest />
           <span className="text">Settings</span>
         </li>
+        {
+          isSettingShow && <Settings />
+        }
         <li className="pointer transition  flex align-center gap-sm">
           <BsFillBookmarkStarFill />
           <span className="text">Bookmarks</span>
@@ -46,14 +56,14 @@ export const AccountControl = ({ activeState }) => {
         </li>
         <li className="pointer transition  flex align-center gap-sm">
           <FiLogOut />
-          <span className="text">Logout</span>
+          <span className="text" onClick={logoutHandler}>Logout</span>
         </li>
         <li className="pointer transition  flex align-center gap-sm">
           <BiSolidHelpCircle />
           <span className="text">Help</span>
         </li>
         <li className="pointer transition  flex align-center gap-sm">
-          <span className="t-info tac w-full block mt">Version 1.0</span>
+          <span className="t-info tac w-full block mt">Version {import.meta.env.VITE_BROWSER_VERSION}</span>
         </li>
       </ul>
     </aside>

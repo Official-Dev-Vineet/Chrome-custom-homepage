@@ -136,7 +136,7 @@ body {
 .pad-x-y {
   --x: 1;
   --y: 1;
-  padding: var(--x) rem var(--y) rem;
+  padding: calc(var(--x) * 1rem) calc(var(--y) * 1rem);
 }
 
 .padding-sm {
@@ -172,7 +172,7 @@ body {
 .margin-x-y {
   --x: 1;
   --y: 1;
-  margin: var(--x) rem var(--y) rem;
+  margin: calc(var(--x * 1rem) calc(var(--y * 1rem)));
 }
 .ml-auto {
   margin-left: auto;
@@ -284,12 +284,13 @@ img {
 .sticky {
   --top: 0;
   position: sticky;
-  top: var(--top) rem;
+  left: 0;
+  top: calc(var(--top * 1rem));
 }
 .absolute {
   --top: 0;
   position: absolute;
-  top: var(--top) rem;
+  top: calc(var(--top * 1rem));
 }
 .relative {
   position: relative;
@@ -320,7 +321,7 @@ img {
   text-align: left;
 }
 .shadow-3d {
-  box-shadow: -3px -3px 10px rgb(46, 45, 45), 3px 3px 10px rgb(10, 9, 9);
+  box-shadow: -3px -1px 10px var(--gray, #383b3f), 3px 3px 10px #202122;
 }
 .t-p-stroke {
   color: transparent;

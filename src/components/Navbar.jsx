@@ -9,8 +9,8 @@ export const Navbar = () => {
   return (
     <nav className="flex align-center gap-xl justify-between pad-content-y pad-content-x">
       <div className="logo ff-2">
-        <span className={`t-info transition ${isActive && "t-i-shadow"}`}>
-          TechBlog {user.username}
+        <span className={`t-primary transition ${isActive && "t-i-shadow"}`}>
+         {user.username}
         </span>
       </div>
       <SearchField /> 
