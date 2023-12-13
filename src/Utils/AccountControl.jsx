@@ -9,15 +9,18 @@ import { BsFillBookmarkStarFill } from "react-icons/bs";
 import { FaHistory } from "react-icons/fa";
 import { BiSolidHelpCircle } from "react-icons/bi";
 import Settings from "./Settings";
+import History from "./History";
 export const AccountControl = ({ activeState }) => {
   const [isShow, setIsShow] = useState(false);
   const [isSettingShow, setIsSettingShow] = useState(false)
+  const [showHistory, setShowHistory] = useState(false)
   const sideBarHandler = (value) => {
-    value === "isShow" ? setIsShow(pre=>!pre) : value === "isSettingShow" ? setIsSettingShow(pre=>!pre) : null
+    value === "isShow" ? setIsShow(pre => !pre) : value === "isSettingShow" ? setIsSettingShow(pre => !pre) : value === "history" ? setShowHistory(pre => !pre) : null
   };
   useEffect(() => {
     activeState ? setIsShow(false) : null;
     activeState ? setIsSettingShow(false) : null
+    activeState ? setShowHistory(false) : null
   }, [activeState]);
   const logoutHandler = () => {
     localStorage.clear();
@@ -28,7 +31,7 @@ export const AccountControl = ({ activeState }) => {
       className={`shadow-3d padding-md transition radius-1 ${activeState && "active"
         }`}
     >
-      <h2 className="ff-1 mb tac">Account Control</h2>
+      <h2 className="ff-2 mb tac">Account Control</h2>
       <ul className="service relative flex flex-col gap-sm">
         <li
           className="pointer flex align-center gap-sm"
@@ -50,10 +53,12 @@ export const AccountControl = ({ activeState }) => {
           <BsFillBookmarkStarFill />
           <span className="text">Bookmarks</span>
         </li>
-        <li className="pointer transition  flex align-center gap-sm">
+        <li className="pointer transition  flex align-center gap-sm" onClick={() => sideBarHandler("history")}>
           <FaHistory />
           <span className="text">History</span>
-        </li>
+        </li>{
+          showHistory && <History />
+        }
         <li className="pointer transition  flex align-center gap-sm">
           <FiLogOut />
           <span className="text" onClick={logoutHandler}>Logout</span>

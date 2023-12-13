@@ -13,9 +13,9 @@ export const App = () => {
   const [accentColor, setAccentColor] = useState(localStorage.getItem("accentColor") || "#2d7bf9")
   const [currentTheme, setCurrentTheme] = useState(localStorage.getItem("userTheme") || "dark")
   const [frameLink, setFrameLink] = useState(localStorage.getItem("frameLink") || "")
-  const [history, setHistory] = useState(localStorage.getItem("history"), [])
-  const [bookmark,setBookmark] = useState(localStorage.getItem("bookmark") || [])
-  const [searchEngine, setSearchEngine] = useState(localStorage.getItem("searchEngine") || "algolia")
+  const [history, setHistory] = useState(JSON.parse(localStorage.getItem("history")) || [])
+  // const [bookmark,setBookmark] = useState(localStorage.getItem("bookmark") || [])
+  // const [searchEngine, setSearchEngine] = useState(localStorage.getItem("searchEngine") || "algolia")
   useLayoutEffect(() => {
     document.documentElement.style.setProperty("--primary", accentColor)
   }, [accentColor])
@@ -31,7 +31,7 @@ export const App = () => {
     )
   );
   return (
-    <userContext.Provider value={{ user, setUser, accentColor, setAccentColor, currentTheme, setCurrentTheme }}>
+    <userContext.Provider value={{ user, setUser, accentColor, setAccentColor, currentTheme, setCurrentTheme, frameLink, setFrameLink, history, setHistory }}>
       <Suspense fallback={<div>Loading...</div>}>
         <RouterProvider router={router} />
       </Suspense>

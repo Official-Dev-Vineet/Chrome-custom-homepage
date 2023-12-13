@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "./searchResult.css";
+import { userContext } from "../Context/Context";
 export const SearchField = () => {
   const [searchEngine, setSearchEngine] = useState("algolia");
   const [loading, setLoading] = useState(false);
@@ -9,6 +10,7 @@ export const SearchField = () => {
   const [searchResult, setSearchResult] = useState({});
   const [error, setError] = useState(false);
   const [searchTerm, setSearchTerm] = useState('')
+  const { setFrameLink } = useContext(userContext)
   const fetchSearchResult = async (sValue) => {
     setLoading(true)
     const response = await fetch(
@@ -43,6 +45,10 @@ export const SearchField = () => {
       setLoading(false)
     }
   };
+  const linkHandler = (e, link) => {
+    e.preventDefault()
+    setFrameLink(link)
+  }
   const startSearch = () => {
     setError(false);
     setIsResultFetching(false);
@@ -112,6 +118,7 @@ export const SearchField = () => {
                   target="_blank"
                   rel="noreferrer noopener"
                   className="t-light"
+                  onClick={(e) => linkHandler(e, item.url)}
                 >
                   {item.story_title || item.title}
                 </a>
@@ -135,7 +142,7 @@ export const SearchField = () => {
                   target="_blank"
                   rel="noreferrer noopener"
                   className="t-light"
-                  onClick={()=>linkHandler(item.link)}
+                  onClick={(e) => linkHandler(e, item.link)}
                 >
                   <span className="text-ellipse" dangerouslySetInnerHTML={{ __html: item.htmlTitle || item.title }}></span>
                 </a>

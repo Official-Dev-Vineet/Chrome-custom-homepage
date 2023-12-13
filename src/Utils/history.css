@@ -1,0 +1,6 @@
+.history{
+    height: 90vh;
+    background-color: var(--dark);
+    max-width: 90%;
+    width: 100%;
+}
