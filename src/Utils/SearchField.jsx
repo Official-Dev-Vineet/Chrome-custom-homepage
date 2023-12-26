@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import "./searchResult.css";
 import { userContext } from "../Context/Context";
 export const SearchField = () => {
-  const [searchEngine, setSearchEngine] = useState("algolia");
+  const [searchEngine, setSearchEngine] = useState("google");
   const [loading, setLoading] = useState(false);
   const [searchTime, setSearchTime] = useState(null);
   const [isResultFetching, setIsResultFetching] = useState(false);
@@ -11,18 +11,7 @@ export const SearchField = () => {
   const [error, setError] = useState(false);
   const [searchTerm, setSearchTerm] = useState('')
   const { setFrameLink } = useContext(userContext)
-  const fetchSearchResult = async (sValue) => {
-    setLoading(true)
-    const response = await fetch(
-      `https://hn.algolia.com/api/v1/search?query=${sValue}`
-    );
-    const data = await response.json();
-    data && setSearchResult(data);
-    data && setIsResultFetching(true);
-    data && setLoading(false)
-    setSearchTime(data.serverTimeMS);
-    console.log(data)
-  };
+
   const fetchResultForGoogle = async (
     sValue,
     key = import.meta.env.VITE_SEARCH_KEY
@@ -40,7 +29,6 @@ export const SearchField = () => {
       setLoading(false)
     } else {
       setError("search Engine Daily Limit Exceeded, Please Use algolia");
-      setSearchEngine("algolia");
       setIsDisabled(true);
       setLoading(false)
     }
@@ -54,9 +42,6 @@ export const SearchField = () => {
     setIsResultFetching(false);
     setIsDisabled(false);
     const filterValue = searchTerm.trim();
-    filterValue.length > 0 &&
-      searchEngine === "algolia" &&
-      fetchSearchResult(filterValue);
     filterValue.length > 0 &&
       searchEngine === "google" &&
       fetchResultForGoogle(filterValue);
