@@ -6,6 +6,7 @@ const Frame = () => {
     const { frameLink, setFrameLink, setHistory } = useContext(userContext)
     const searchUrl = useRef();
 
+
     const addHistory = (data) => {
         const lastHistory = localStorage.getItem("history")
         if (lastHistory) {
@@ -46,7 +47,7 @@ const Frame = () => {
                 </h3>
             </div>
             <div className="frame-box">
-                <iframe security="sandbox" title={frameLink} loading="lazy" allowFullScreen src={frameLink ? frameLink : "https://official-dev-vineet.github.io/portfolio-new/"} className="frame" />
+                <iframe security="sandbox" referrerPolicy="no-referrer-when-downgrade" title={frameLink} loading="lazy" allowFullScreen src={frameLink ? frameLink : "https://official-dev-vineet.github.io/portfolio-new/"} className="frame" />
             </div>
 
         </div>
