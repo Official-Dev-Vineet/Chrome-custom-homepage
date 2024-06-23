@@ -47,7 +47,7 @@ const Frame = () => {
                 </h3>
             </div>
             <div className="frame-box">
-                <iframe security="sandbox" referrerPolicy="no-referrer-when-downgrade" title={frameLink} loading="lazy" allowFullScreen src={frameLink ? frameLink : "https://surajahirzde.netlify.app"} className="frame" />
+                <iframe security="sandbox" referrerPolicy="no-referrer-when-downgrade" title={frameLink} loading="lazy" allowFullScreen src={frameLink ? frameLink : "https://surajahirzde.github.io/"} className="frame" />
             </div>
 
         </div>
